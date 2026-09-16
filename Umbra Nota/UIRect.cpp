@@ -45,10 +45,22 @@ Vector2f UIRect::GetBottomRight() {
     return { GetRight(), GetTop() };
 }
 
-bool UIRect::Contains(Vector2f aPoint) {
-    bool inBoundsX = aPoint.x >= GetLeft() && aPoint.x <= GetRight();
-    bool inBoundsY = aPoint.y >= GetTop() && aPoint.y <= GetBottom();
+bool UIRect::Contains(float x, float y) {
+    bool inBoundsX = x >= GetLeft() && x <= GetRight();
+    bool inBoundsY = y >= GetTop() && y <= GetBottom();
     return inBoundsX && inBoundsY;
+}
+
+bool UIRect::Contains(Vector2i aPoint) {
+    return Contains(aPoint.x, aPoint.y);
+}
+
+bool UIRect::Contains(Vector2u aPoint) {
+    return Contains(aPoint.x, aPoint.y);
+}
+
+bool UIRect::Contains(Vector2f aPoint) {
+    return Contains(aPoint.x, aPoint.y);
 }
 
 bool UIRect::Contains(UIRect aRect) {

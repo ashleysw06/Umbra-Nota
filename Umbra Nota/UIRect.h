@@ -22,6 +22,9 @@ public:
     Vector2f GetBottomLeft();
     Vector2f GetBottomRight();
 
+    bool Contains(float x, float y);
+    bool Contains(Vector2i aPoint);
+    bool Contains(Vector2u aPoint);
     bool Contains(Vector2f aPoint);
     bool Contains(UIRect aRect);
 };
