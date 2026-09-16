@@ -139,23 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AshleySW06.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Keybind.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="NotePad.cpp" />
+    <ClCompile Include="StandardCursor.cpp" />
     <ClCompile Include="UIRect.cpp" />
     <ClCompile Include="TextPrompt.cpp" />
+    <ClCompile Include="ScrollView.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AshleySW06.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Keybind.h" />
     <ClInclude Include="Note.h" />
     <ClInclude Include="NotePad.h" />
+    <ClInclude Include="StandardCursor.hpp" />
     <ClInclude Include="UIRect.h" />
     <ClInclude Include="TextPrompt.h" />
+    <ClInclude Include="ScrollView.h" />
     <ClInclude Include="WinKeyCodes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
