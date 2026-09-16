@@ -23,7 +23,10 @@ void Container::SetRect(UIRect* aRect) {
 }
 
 RectangleShape Container::GetShape() {
-    RectangleShape container({ rect->width, rect->height });
-    container.setPosition({ rect->x - rect->width / 2, rect->y - rect->height / 2 });
+    RectangleShape container(rect->size);
+    container.setPosition({ 
+        rect->position.x - rect->size.x / 2, 
+        rect->position.y - rect->size.y / 2 
+    });
     return container;
 }

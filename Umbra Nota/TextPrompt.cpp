@@ -101,7 +101,7 @@ string TextPrompt::CreatePrompt(string message) {
 
         // Handle text overflow
 
-        float textLimitWidth = promptContainer.rect->width - (promptContainer.rect->GetLeft() + textPadding) * 2;
+        float textLimitWidth = promptContainer.rect->size.x - (promptContainer.rect->GetLeft() + textPadding) * 2;
         float textContentWidth = text.getGlobalBounds().size.x + textPadding * 2;
 
         if (textContentWidth > textLimitWidth) {

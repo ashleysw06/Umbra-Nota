@@ -46,6 +46,9 @@ void NotePad::Open() {
     int bodyFontSize = 18;
 
     // Scrolling
+    Vector2i mousePosition;
+
+    // Scrolling
     Vector2f scrollDistance = { 0, 0 };
     Vector2f scrollVelocity = { 0, 0 };
     float scrollVelocityLimit = 50;
@@ -78,11 +81,11 @@ void NotePad::Open() {
     metadataContainerShape.setFillColor(panelColor);
 
     // Notes
-    float noteWidth = noteContainer.rect->width - notePadding * 2;
-    float noteHeight = fmin(100, fmax(50, noteContainer.rect->height)); // Max height fmin[0], Min Height fmax[0]
+    float noteWidth = noteContainer.rect->size.x - notePadding * 2;
+    float noteHeight = fmin(100, fmax(50, noteContainer.rect->size.y)); // Max height fmin[0], Min Height fmax[0]
 
     Vector2f groupedNoteSize = { noteWidth, noteHeight / 2 + notes.size() * (noteHeight + noteMargin) + notePadding};
-    Vector2f overflowSize = { groupedNoteSize.x - noteContainer.rect->width, groupedNoteSize.y - noteContainer.rect->height };
+    Vector2f overflowSize = { groupedNoteSize.x - noteContainer.rect->size.x, groupedNoteSize.y - noteContainer.rect->size.y };
 
     while (window.isOpen()) {
         scrollVelocity *= scrollVelocityDrag;
@@ -125,12 +128,8 @@ void NotePad::Open() {
                 std::cout << "mouse y: " << mouseWheelScrolled->position.y << std::endl;*/
             }
 
-            if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>()) {
-                if (mouseButtonPressed->button == sf::Mouse::Button::Right) {
-                    std::cout << "the right button was pressed" << std::endl;
-                    std::cout << "mouse x: " << mouseButtonPressed->position.x << std::endl;
-                    std::cout << "mouse y: " << mouseButtonPressed->position.y << std::endl;
-                }
+            if (const auto* eMousePosition = event->getIf<sf::Event::MouseMoved>()) {
+                mousePosition = eMousePosition->position;
             }
         }
 
@@ -178,7 +177,7 @@ void NotePad::Open() {
             Note* note = &notes[i];
 
             RectangleShape noteBody({ noteWidth, noteHeight });
-            UIRect noteRect((noteContainer.rect->x) + scrollDistance.x, (noteContainer.rect->GetTop() + noteHeight / 2 + i * (noteHeight + noteMargin) + notePadding) + scrollDistance.y, noteWidth, noteHeight);
+            UIRect noteRect((noteContainer.rect->position.x) + scrollDistance.x, (noteContainer.rect->GetTop() + noteHeight / 2 + i * (noteHeight + noteMargin) + notePadding) + scrollDistance.y, noteWidth, noteHeight);
             Container noteDataContainer(&noteRect);
             Vector2f bodyPosition = { noteDataContainer.rect->GetLeft(), noteDataContainer.rect->GetTop() };
 
