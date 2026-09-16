@@ -1,4 +1,5 @@
 #include "UIRect.h"
+#include <SFML/Graphics.hpp>
 
 using namespace sf;
 using namespace std;
@@ -12,17 +13,12 @@ public:
     UIRect* rect;
 
     Container();
-    Container(UIRect* rect);
+    Container(UIRect* aRect);
     Container(float x, float y, float width, float height);
 
     void SetRect(UIRect* rect);
 
-    RectangleShape GetShape();
+    virtual void AddChild(Container* child);
 
-    enum ParentChildInteraction {
-        LAYOUT_IGNORE,
-        LAYOUT_HORIZONTAL,
-        LAYOUT_VERTICAL,
-        LAYOUT_GRID
-    };
+    RectangleShape GetShape();
 };

@@ -22,6 +22,10 @@ void Container::SetRect(UIRect* aRect) {
     rect = aRect;
 }
 
+void Container::AddChild(Container* child) {
+    children.push_back(child);
+}
+
 RectangleShape Container::GetShape() {
     RectangleShape container(rect->size);
     container.setPosition({ 
