@@ -14,7 +14,7 @@ public:
 	vector<string> tags;
 
 	Note(string text);
-	Note(string text, string header);
+	Note(string header, string text);
 	void SetHeader();
 	void SetHeader(string text);
 	void Modifiy(string text);

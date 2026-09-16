@@ -5,13 +5,7 @@
 
 using namespace std;
 
-Note::Note(string text) {
-    body = text;
-    SetHeader();
-
-    dateCreated = time(NULL);
-    lastModified = time(NULL);
-}
+Note::Note(string text) : Note(text, text) { }
 
 Note::Note(string header, string text) {
     body = text;
