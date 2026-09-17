@@ -105,8 +105,20 @@ int main() {
 	Json::Value jNotes = root["notes"];
 	for (size_t i = 0; i < jNotes.size(); i++) {
 		Json::Value jNote(jNotes.get(i, NULL));
+		Note note(jNote["head"].asString(), jNote["body"].asString());
+
+		Json::Value jMeta(jNote.get("metadata", NULL));
+		if (jMeta != NULL) {
+			note.dateCreated = jMeta.get("createdAt", 0).asInt();
+			note.dateCreated = jMeta.get("lastModified", 0).asInt();
+
+			Json::Value jTags = jMeta["tags"];
+			for (size_t j = 0; j < jTags.size(); j++) {
+				note.tags.push_back(jTags.get(j, "NULL").asString());
+			}
+		}
 		
-		notePad.AddNote(jNote["head"].asString(), jNote["body"].asString());
+		notePad.AddNote(note);
 	}
 
 	
@@ -114,9 +126,6 @@ int main() {
 
 	while (true) {
 		memoBind.Update();
-
-
-
 		viewBind.Update();
 		quitBind.Update();
 
@@ -132,8 +141,17 @@ int main() {
 
 			jNote["head"] = note.header;
 			jNote["body"] = note.body;
+			jNote["metadata"]["createdAt"] = note.dateCreated;
+			jNote["metadata"]["lastModified"] = note.lastModified;
+			jNote["metadata"]["tags"] = Json::Value(Json::arrayValue);
 
-			jNotes.append(jNote);
+			Json::Value jTags = jNote["metadata"]["tags"];
+			for (size_t j = 0; j < jTags.size(); j++) {
+				jTags.append(note.tags.at(j));
+			}
+
+			cout << fastWriter.write(jNote) << endl;
+			root["notes"].append(jNote);
 		}
 
 		if (viewBind.GetChange(0)) {
