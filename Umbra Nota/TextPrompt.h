@@ -9,8 +9,5 @@ public:
 	TextPrompt();
 	string CreatePrompt();
 	string CreatePrompt(string message);
-
-private:
-	string content = "";
 };
 
