@@ -152,6 +152,14 @@ int main() {
 
 			cout << fastWriter.write(jNote) << endl;
 			root["notes"].append(jNote);
+
+
+			std::string output = fastWriter.write(root);
+
+			ofstream notesFileOutput;
+			notesFileOutput.open("notes.json");
+			notesFileOutput << output;
+			notesFileOutput.close();
 		}
 
 		if (viewBind.GetChange(0)) {
@@ -163,16 +171,6 @@ int main() {
 			break;
 		}
 	}
-
-	cout << "Saving Notes" << endl;
-
-	std::string output = fastWriter.write(root);
-	cout << output << endl;
-
-	ofstream notesFileOutput;
-	notesFileOutput.open("notes.json");
-	notesFileOutput << output;
-	notesFileOutput.close();
 
 	cout << "Exiting Program..." << endl;
 	return 0;
