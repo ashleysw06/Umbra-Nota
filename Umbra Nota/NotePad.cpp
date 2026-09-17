@@ -51,6 +51,7 @@ void NotePad::Open() {
 
 	int headerFontSize = 24;
 	int bodyFontSize = 18;
+	int metadataFontSize = 12;
 
 	// Note Viewing
 	ScrollView* focusedScrollView{};
@@ -187,17 +188,73 @@ void NotePad::Open() {
 		}
 
 		if (selectedNote != NULL) {
+
+			// Header
+			
 			Text headerText(font, selectedNote->header, headerFontSize);
 			headerText.setFillColor(textColor);
 			headerText.setStyle(sf::Text::Bold);
 			headerText.setPosition({ dataContainer.rect->GetLeft() + textPadding, dataContainer.rect->GetTop() + textPadding });
 
-			Text bodyText(font, selectedNote->body, bodyFontSize);
-			bodyText.setFillColor(textColor);
-			bodyText.setPosition({ dataContainer.rect->GetLeft() + textPadding + bodyTextPadding, dataContainer.rect->GetTop() + textPadding * 2 + headerFontSize });
-
-			window.draw(bodyText);
 			window.draw(headerText);
+
+			// Body
+			// Text Wrap
+
+			string delimiter = "\n";
+			string s = selectedNote->body + delimiter;
+			float textBounds = dataContainer.rect->size.x - (textPadding + bodyTextPadding);
+
+			std::vector<std::string> lines;
+			size_t pos = 0;
+			std::string token;
+			while ((pos = s.find(delimiter)) != std::string::npos) { // Split by \n
+				token = s.substr(0, pos);
+				Text tmp(font, token, bodyFontSize);
+				while (tmp.getLocalBounds().size.x > textBounds) {
+					int availableSize = token.size();
+					while (tmp.getLocalBounds().size.x > textBounds) { // Split overflow by blank space
+						tmp.setString(token.substr(0, availableSize));
+						int tempASize = token.substr(0, availableSize - 1).find_last_of(" ");
+						if (tempASize != std::string::npos) {
+							availableSize = tempASize;
+						} else { // If no blank space: Split between last character within bounds
+							availableSize--;
+						}
+					}
+					lines.push_back(token.substr(0, availableSize));
+					token.erase(0, availableSize + 1);
+					tmp.setString(token);
+				}
+				lines.push_back(token);
+				s.erase(0, pos + delimiter.length());
+			}
+			lines.push_back(s);
+
+			// Draw lines
+
+			for (size_t i = 0; i < lines.size(); i++) {
+				Text bodyText(font, lines[i], bodyFontSize);
+				bodyText.setFillColor(textColor);
+				bodyText.setPosition({ dataContainer.rect->GetLeft() + textPadding + bodyTextPadding, dataContainer.rect->GetTop() + textPadding * 2 + headerFontSize + i * (bodyFontSize + 2 /* Line Spacing */) });
+
+				window.draw(bodyText);
+			}
+
+			// Footer / Metadata
+
+			string metadataText = "Created at: " + selectedNote->GetCreationDisplayTime() + 
+				"Last Modified: " + selectedNote->GetModificationDisplayTime() +
+				"Tags: ";
+			for (size_t i = 0; i < selectedNote->tags.size(); i++) {
+				string tag = selectedNote->tags[i];
+				metadataText += "#" + tag + " ";
+			}
+			Text metadata(font, metadataText, bodyFontSize);
+			metadata.setFillColor(textColor);
+			metadata.setPosition({ dataContainer.rect->GetLeft() + textPadding + bodyTextPadding, dataContainer.rect->GetBottom() - metadata.getLocalBounds().size.y - textPadding });
+
+			window.draw(metadata);
 		}
 
 		window.display();
