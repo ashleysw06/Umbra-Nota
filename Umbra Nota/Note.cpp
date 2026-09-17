@@ -16,11 +16,11 @@ Note::Note(string header, string text) {
 }
 
 void Note::SetHeader() {
-    header = body.substr(0, fmin(20, body.size()));
+    header = body.substr(0, fmin(24, body.size()));
 }
 
 void Note::SetHeader(string text) {
-    header = text.substr(0, fmin(20, text.size()));
+    header = text.substr(0, fmin(24, text.size()));
 }
 
 void Note::Modifiy(string text) {
