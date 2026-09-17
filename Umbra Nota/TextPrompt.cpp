@@ -74,13 +74,13 @@ string TextPrompt::CreatePrompt(string message) {
             }
 
             if (const auto* textEntered = event->getIf<Event::TextEntered>()) {
-                // cout << textEntered->unicode << endl;
+                cout << "Key Pressed: " << textEntered->unicode << " ( " << static_cast<char>(textEntered->unicode) << ") " <<endl;
                 switch (textEntered->unicode) {
-                case 8:
+                case 8: // Backspace
                     if (content.size() > 0) content.erase(content.size() - 1, 1);
                     break;
-                case 127:
-                    content.erase(0, content.size());
+                case 127: // CTRL + Backspace
+                    content.erase(content.find_last_of(" ") + 1, content.size());
                     break;
                 default:
                     content += static_cast<char>(textEntered->unicode);
