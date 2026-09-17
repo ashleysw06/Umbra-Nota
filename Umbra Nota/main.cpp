@@ -109,8 +109,8 @@ int main() {
 
 		Json::Value jMeta(jNote.get("metadata", NULL));
 		if (jMeta != NULL) {
-			note.dateCreated = jMeta.get("createdAt", 0).asInt();
-			note.dateCreated = jMeta.get("lastModified", 0).asInt();
+			note.dateCreated = static_cast<time_t>(jMeta.get("createdAt", 0).asInt());
+			note.lastModified = static_cast<time_t>(jMeta.get("lastModified", 0).asInt());
 
 			Json::Value jTags = jMeta["tags"];
 			for (size_t j = 0; j < jTags.size(); j++) {
@@ -120,7 +120,6 @@ int main() {
 		
 		notePad.AddNote(note);
 	}
-
 	
 	notePad.Open();
 
