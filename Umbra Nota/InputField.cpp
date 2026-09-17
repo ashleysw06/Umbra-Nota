@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "windows.h"
+#include "sysinfoapi.h"
 #include "InputField.h"
 
 using namespace std;
@@ -118,10 +120,19 @@ void InputField::Draw(sf::RenderWindow* window, Container* container) {
     tmp.setStyle(sf::Text::Bold);
 
     RectangleShape caret;
-    caret.setSize({ 1, 1.0f + fontSize });
-    caret.setPosition({ container->rect->GetLeft() + textPadding + tmp.getLocalBounds().size.x, textPosition.y });
+
+    caret.setSize({ 2, 1.0f + fontSize });
+    caret.setPosition({ container->rect->GetLeft() + textPadding + tmp.getLocalBounds().size.x + 1, textPosition.y });
+
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    float s = st.wMilliseconds / 1000.0f;
+    if (s * blinkRate / 2 - floor(s * blinkRate / 2) >= 0.5) {
+        caret.setSize({ 0, 0 });
+    }
 
     window->draw(shadow);
     window->draw(text);
     window->draw(caret);
+
 }

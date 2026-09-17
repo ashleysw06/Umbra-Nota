@@ -21,6 +21,7 @@ public:
 	int fontSizeMin = 18;
 
 	unsigned int insertionLocation = 0; // Caret
+	float blinkRate = 2; // Times per second
 
 	InputField(string aPlaceholder);
 
